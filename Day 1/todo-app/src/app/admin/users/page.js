@@ -1,28 +1,16 @@
-"use client";
+import { userModel } from "@/src/utils/db";
 
-import { useEffect, useState } from "react";
+// server component
+export default async function UsersPage() {
+  const data = await userModel.find().select("-password");
 
-export default function UsersPage() {
-  const [userData, setUserData] = useState(null);
-
-  async function fetchUser() {
-    const response = await fetch("/api/v1/users");
-    const data = await response.json();
-    setUserData(data.data);
-  }
-
-  useEffect(() => {
-    fetchUser();
-  }, []);
-
-  if (userData == null) {
-    return <div>Loading...</div>;
-  }
+  //   const response = await fetch("http://localhost:3000/api/v1/users");
+  //   const data = await response.json();
 
   return (
     <div>
       <h2> Admin page: Available UsersPage</h2>
-      {userData.map((userObj) => {
+      {data.map((userObj) => {
         return <div key={userObj._id}> {userObj.username} </div>;
       })}
     </div>
